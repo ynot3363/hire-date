@@ -50,12 +50,14 @@ export default class UserPropertiesWebPart extends BaseClientSideWebPart<IUserPr
     const sp = spfi().using(spSPFx(this.context));
 
     const myProfile = await sp.profiles.myProperties();
-    const spsHireDate = myProfile.UserProfileProperties.filter(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (prop: { Key: string; Value: any }) => prop.Key === "SPS-HireDate"
-    )[0];
+    const userProfileProperties = myProfile.UserProfileProperties;
 
-    this._hireDate = new Date(spsHireDate.Value).toLocaleDateString();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    userProfileProperties.forEach((prop: { Key: string; Value: any }) => {
+      if (prop.Key === "SPS-HireDate" && !!prop.Value) {
+        this._hireDate = new Date(prop.Value).toLocaleDateString();
+      }
+    });
 
     return Promise.resolve();
   }
