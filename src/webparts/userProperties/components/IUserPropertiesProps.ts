@@ -4,4 +4,5 @@ export interface IUserPropertiesProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  hireDate: string;
 }
