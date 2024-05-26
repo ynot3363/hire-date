@@ -39,6 +39,14 @@ export default class UserPropertiesWebPart extends BaseClientSideWebPart<IUserPr
 
   protected async onInit(): Promise<void> {
     await super.onInit();
+    await this._getCurrentUserHireDate();
+
+    return this._getEnvironmentMessage().then((message) => {
+      this._environmentMessage = message;
+    });
+  }
+
+  private async _getCurrentUserHireDate(): Promise<void> {
     const sp = spfi().using(spSPFx(this.context));
 
     const myProfile = await sp.profiles.myProperties();
@@ -48,10 +56,6 @@ export default class UserPropertiesWebPart extends BaseClientSideWebPart<IUserPr
     )[0];
 
     this._hireDate = new Date(spsHireDate.Value).toLocaleDateString();
-
-    await this._getEnvironmentMessage().then((message) => {
-      this._environmentMessage = message;
-    });
 
     return Promise.resolve();
   }
