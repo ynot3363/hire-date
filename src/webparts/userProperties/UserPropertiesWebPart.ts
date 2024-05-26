@@ -55,7 +55,13 @@ export default class UserPropertiesWebPart extends BaseClientSideWebPart<IUserPr
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     userProfileProperties.forEach((prop: { Key: string; Value: any }) => {
       if (prop.Key === "SPS-HireDate" && !!prop.Value) {
-        this._hireDate = new Date(prop.Value).toLocaleDateString();
+        try {
+          this._hireDate = new Date(prop.Value).toLocaleDateString();
+        } catch (error) {
+          console.error(
+            `The SPS-HireDate value of: ${prop.Value} cannot be coverted into a Date Object.`
+          );
+        }
       }
     });
 
